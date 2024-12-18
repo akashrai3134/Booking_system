@@ -1,17 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {Form , Input , Button, message} from 'antd'
 import {Link} from 'react-router-dom';
-
 import { loginUser } from '../apicalls/userapi';
+import { useSelector, useDispatch  } from 'react-redux';
+import { setUser } from '../redux/userSlice';
+import { useNavigate } from 'react-router-dom';
 function Login() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const onsubmit = async (value) => {
         try{
             const response = await loginUser(value);
+            console.log(response);
+            
+
             if(response.success){
                 message.success(response.message);
-                // window.location.href='/';
-                
+                localStorage.setItem('token', response.token);
+                dispatch(setUser(response.user));
+                navigate('/');
+
             }else{
                 message.error(response.message);
             }
@@ -19,6 +29,12 @@ function Login() {
             message.error(error.message);
         }
     }
+
+    useEffect(()=>{
+        if(localStorage.getItem('token')){
+            navigate('/home');
+        }
+    }, [])
   return (
      <>
       <header className="App-header">

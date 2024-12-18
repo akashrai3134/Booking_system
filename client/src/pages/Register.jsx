@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 import { registerUser } from "../apicalls/userapi";
 
 function Register() {
+
+    const navigate = useNavigate();
 
     const submitForm = async (value) => {
         console.log(value);
@@ -22,6 +24,12 @@ function Register() {
             console.log(error);
         }
     }
+
+    useEffect(()=>{
+        if(localStorage.getItem('token')){
+            navigate('/login');
+        }
+    }, [])
 
   return (
     <>

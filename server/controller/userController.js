@@ -1,5 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 
 async function Register(req, res) {
     try {
@@ -52,10 +54,20 @@ async function Login(req, res) {
             })
             return
         }
+
+        // never exprime
+        // const token = jwt.sign({userId : user._id} , `${process.env.SECRET_KEY}`);
+
+        // exprime after one day
+        const token = jwt.sign({userId : user._id} , `${process.env.SECRET_KEY}`, {expiresIn : "1d"});
+
+        console.log('token', token);
+
         res.send({
             success : true,
             user : user,
-            message : "user is logged in"
+            message : "user is logged in",
+            token : token
         })
     } catch(error){
         console.log(error);
@@ -64,6 +76,18 @@ async function Login(req, res) {
 
 }
 
+async function getCurrentUser(req, res) {
+    try{
+        const user = await User.findById(req.body.userId).select('-password');
+        res.send({ 
+            success : true, 
+            message: "Welcome to the protected route!", 
+            user:user });
 
+    }catch(error){
+        console.log(error);
+        return;
+    }
+}
 
-module.exports ={Register, Login}
+module.exports ={Register, Login, getCurrentUser}
