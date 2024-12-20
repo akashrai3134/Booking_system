@@ -1,14 +1,5 @@
 const Theatre = require('../models/theaterModel');
 
-const getAllTheatres = async (req, res) => {
-  try {
-    const theatres = await Theatre.find();
-    res.status(200).json(theatres);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 const addTheatre = async (req, res) => {
   try {
     const newTheatre = new Theatre(req.body);
@@ -42,10 +33,34 @@ const updateTheatre = async (req, res) => {
 
 const deleteTheatre = async (req, res) => {
   try {
-    await Theatre.findByIdAndDelete(req.body.theatreId);
+    console.log("Delete request received for theatreId:", req.body);
+    const deletedTheatre = await Theatre.findByIdAndDelete(req.body.theatreId);
+    if (!deletedTheatre) {
+      return res.send({
+        success: false,
+        message: "Theatre not found!"
+      });
+    }
     res.send({
       success: true,
       message: "The theatre has been deleted!"
+    });
+  } catch (error) {
+    console.error("Error deleting theatre:", error);
+    res.send({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+const getAllTheatres = async (req, res) => {
+  try {
+    const theatres = await Theatre.find().populate('owner');
+    res.send({
+      success: true,
+      message: "All theatres fetched!",
+      data: theatres
     });
   } catch (error) {
     res.send({
@@ -55,9 +70,26 @@ const deleteTheatre = async (req, res) => {
   }
 };
 
+const getAllTheatresByOwner =  async (req, res) => {
+    try{
+        const allTheatres = await Theatre.find({owner: req.body.owner});
+        res.send({
+            success: true,
+            message: "All theatres fetched successfully!",
+            data: allTheatres
+        })
+    }catch(err){
+        res.send({
+            success: false,
+            message: err.message
+        })
+    }
+}
+
 module.exports = {
-  getAllTheatres,
   addTheatre,
   updateTheatre,
-  deleteTheatre
+  deleteTheatre,
+  getAllTheatres,
+  getAllTheatresByOwner
 };

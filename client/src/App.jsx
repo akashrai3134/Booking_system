@@ -20,7 +20,7 @@ function App() {
   return (
     <div>
         {loading && (
-          <div className="spinner-overlay">
+          <div className="spinner-overlay"> 
             <Spin size="large" />
           </div>
         )}

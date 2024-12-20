@@ -22,7 +22,7 @@ function Profile() {
   return (
     <div>
       <h1>Welcome {user.name}! to your Profile</h1>
-      <Tabs defaultActiveKey='2' items={TabItems}/>
+      <Tabs defaultActiveKey='1' items={TabItems}/>
     </div>
   );
 }

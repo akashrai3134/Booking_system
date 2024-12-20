@@ -24,7 +24,9 @@ function ProtectedRoute({children}) {
 
     const navItems = [
         {
-          label: "Home",
+          label: (<span
+            onClick={() => {navigate("/home");}}>Home
+          </span>),
           icon: <HomeOutlined />,
         },
         {
