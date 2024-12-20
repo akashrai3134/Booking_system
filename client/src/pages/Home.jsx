@@ -1,22 +1,11 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { showLoading, hideLoading } from '../redux/loadersSlice';
+import {useSelector } from 'react-redux';
 function Home() {
 
-    const navigate = useNavigate();
-    const dispatch  = useDispatch();
-
-    const handleOnClick = ()=>{
-        dispatch(showLoading);
-        localStorage.removeItem('token');
-        navigate('/login');
-        dispatch(hideLoading);
-    }
+    const user = useSelector((state)=> state.user.user);
 
   return (
     <div>
-        <button className='center-class' onClick={handleOnClick}>logout</button>
+        {user.email}
     </div>
   )
 }

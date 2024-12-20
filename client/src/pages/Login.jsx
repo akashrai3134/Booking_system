@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import {Form , Input , Button, message} from 'antd'
 import {Link} from 'react-router-dom';
 import { loginUser } from '../apicalls/userapi';
-import { useSelector, useDispatch  } from 'react-redux';
+import {  useDispatch  } from 'react-redux';
 import { setUser } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 function Login() {
@@ -20,7 +20,7 @@ function Login() {
                 message.success(response.message);
                 localStorage.setItem('token', response.token);
                 dispatch(setUser(response.user));
-                navigate('/');
+                navigate('/home');
 
             }else{
                 message.error(response.message);

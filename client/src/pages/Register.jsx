@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import {Link, useNavigate} from 'react-router-dom';
 
@@ -27,7 +27,7 @@ function Register() {
 
     useEffect(()=>{
         if(localStorage.getItem('token')){
-            navigate('/login');
+            navigate('/');
         }
     }, [])
 
