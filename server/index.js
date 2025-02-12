@@ -1,30 +1,44 @@
 const express = require("express");
 require('dotenv').config()
+const cors = require("cors");
+
 const mongoose = require("mongoose");
-const cors = require('cors');
+
 const app = express();
+
 const PORT = 5003;
 
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/userRoute')
 const theatreRoutes = require('./routes/theatreRoutes')
+const movieRoutes = require('./routes/movieRoutes')
+const showRoutes = require('./routes/showRoutes')
+const bookingRoutes = require('./routes/bookingRoute')
+const reviewRoutes = require('./routes/reviewRoute')
 
-const mongoURI = process.env.MONGO_URI;
+app.use(cors());
+
 
 mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000 // Timeout after 5s instead of 30s
-  })
+  .connect("mongodb+srv://akashrai3134:4ZgxwT6C2EhYdEI3@cluster0.zfgna.mongodb.net/BMS?retryWrites=true&w=majority&appName=Cluster0")
   .then(() => console.log("DB connected"))
   .catch((err) => {
     console.log(err);
   });
-app.use(cors());
+
+
 app.use(express.json())
 app.use(express.urlencoded())
+
 app.use('/api/users' , userRoutes )
+
 app.use('/api/theatres' , theatreRoutes )
+app.use('/api/movies' , movieRoutes )
+app.use('/api/shows' , showRoutes )
+app.use('/api/bookings' , bookingRoutes)
+app.use('/api/reviews' , reviewRoutes)
+
+
+
 app.listen(PORT, () => {
   console.log("Server Started");
 });
